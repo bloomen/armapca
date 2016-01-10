@@ -1,0 +1,16 @@
+libpca2 is a C++ library for principal component analysis.
+
+libpca2 requires Armadillo which can be obtained as a pre-compiled 
+package on most distributions or directly from http://arma.sourceforge.net.
+
+
+Install
+-------
+
+./configure
+make
+make install
+
+
+libpca2 is being developed by Christian Blume. Contact Christian at
+chr.blume@gmail.com for any questions or comments.
