@@ -1,5 +1,5 @@
 #include <libunittest/all.hpp>
-#include <libpca2/pca.hpp>
+#include <armapca/pca.hpp>
 
 
 TEST(test_pca) {

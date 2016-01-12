@@ -1,4 +1,4 @@
-AC_INIT([libpca2],[0.0.1],[chr.blume@gmail.com],[libpca2],[https://github.com/bloomen/libpca2])
+AC_INIT([armapca],[0.0.1],[chr.blume@gmail.com],[armapca],[https://github.com/bloomen/armapca])
 AC_CONFIG_SRCDIR([src/lib/pca.cpp])
 AC_CONFIG_HEADERS([src/lib/config.h])
 AC_CONFIG_MACRO_DIR([m4])
