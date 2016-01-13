@@ -105,13 +105,13 @@ struct pca_result {
 
 
 template<typename T>
-armapca::pca_result<T> pca(const arma::Mat<T>& matrix, const std::string& solver="standard")
+armapca::pca_result<T> pca(const arma::Mat<T>& data, const std::string& solver="standard")
 {
-    const auto n_vars = matrix.n_cols;
+    const auto n_vars = data.n_cols;
     arma::Mat<T> eigvec(n_vars, n_vars);
     arma::Col<T> eigval(n_vars);
 
-    const auto cov_mat = armapca::covariance_matrix(matrix);
+    const auto cov_mat = armapca::covariance_matrix(data);
     arma::eig_sym(eigvec, eigval, cov_mat, solver.c_str());
     const arma::uvec indices = arma::sort_index(eigval, 1);
 
@@ -126,6 +126,21 @@ armapca::pca_result<T> pca(const arma::Mat<T>& matrix, const std::string& solver
     result.eigenvalues *= static_cast<T>(1) / result.energy;
 
     return result;
+}
+
+
+template<typename T>
+T check_eigenvectors_orthogonal(const armapca::pca_result<T>& result)
+{
+    return std::abs(arma::det(result.eigenvectors));
+}
+
+
+template<typename T>
+T check_projection_accurate(const arma::Mat<T>& data, const armapca::pca_result<T>& result)
+{
+    const arma::Mat<double> diff = ((data * result.eigenvectors) * arma::trans(result.eigenvectors)) - data;
+    return static_cast<T>(1) - arma::sum(arma::sum( arma::abs(diff) )) / diff.n_elem;
 }
 
 
