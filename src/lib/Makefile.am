@@ -8,7 +8,7 @@ libarmapca_ladir = $(includedir)
 
 # the list of header files that belong to the library (to be installed later)
 libarmapca_la_HEADERS = \
-armapca/pca.hpp
+armapca/pca.h
 
 # the sources to add to the library and to add to the source distribution
 libarmapca_la_SOURCES = \

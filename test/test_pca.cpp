@@ -1,5 +1,6 @@
 #include <libunittest/all.hpp>
-#include <armapca/pca.hpp>
+
+#include "../src/lib/armapca/pca.h"
 
 
 TEST(test_pca) {
