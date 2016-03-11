@@ -106,8 +106,7 @@ struct pca_result {
 
 template<typename T>
 armapca::pca_result<T> pca(const arma::Mat<T>& data,
-                           bool compute_eigenvectors = true,
-                           const std::string& solver = "dc") {
+                           bool compute_eigenvectors = true) {
   const auto n_vars = data.n_cols;
   arma::Mat<T> eigvec;
   if (compute_eigenvectors)
@@ -116,9 +115,9 @@ armapca::pca_result<T> pca(const arma::Mat<T>& data,
 
   const auto cov_mat = armapca::covariance_matrix(data);
   if (compute_eigenvectors)
-    arma::eig_sym(eigval, eigvec, cov_mat, solver.c_str());
+    arma::eig_sym(eigval, eigvec, cov_mat);
   else
-    arma::eig_sym(eigval, cov_mat, solver.c_str());
+    arma::eig_sym(eigval, cov_mat);
   const arma::uvec indices = arma::sort_index(eigval, 1);
 
   armapca::pca_result<T> result = {arma::Mat<T>(n_vars, n_vars),
@@ -146,13 +145,12 @@ std::vector<armapca::pca_result<T>> pca_bootstrap(
     const arma::Mat<T>& data,
     std::size_t n_bootstraps = 100,
     bool compute_eigenvectors = true,
-    std::size_t random_seed = 1,
-    const std::string& solver = "dc") {
+    std::size_t random_seed = 1) {
   std::vector<armapca::pca_result<T>> result(n_bootstraps);
   std::mt19937 gen{random_seed};
   for (std::size_t i=0; i < n_bootstraps; ++i) {
     const auto shuffled = armapca::shuffled_matrix(data, &gen);
-    result[i] = armapca::pca(shuffled, compute_eigenvectors, solver);
+    result[i] = armapca::pca(shuffled, compute_eigenvectors);
   }
   return result;
 }
