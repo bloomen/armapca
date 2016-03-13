@@ -134,27 +134,31 @@ armapca::pca_result<T> pca(const arma::Mat<T>& data,
   EXPECTS(data.n_cols >= 1);
   const auto n_vars = data.n_cols;
   armapca::pca_result<T> result;
-  if (compute_eigenvectors)
+  arma::Mat<T> eigvec;
+  if (compute_eigenvectors) {
     result.eigenvectors.set_size(n_vars, n_vars);
+    eigvec.set_size(n_vars, n_vars);
+  }
   result.eigenvalues.set_size(n_vars);
+  arma::Col<T> eigval(n_vars);
 
   const auto cov_mat = armapca::covariance_matrix(data);
 
   if (compute_eigenvectors) {
-    arma::eig_sym(result.eigenvalues, result.eigenvectors, cov_mat);
+    arma::eig_sym(eigval, eigvec, cov_mat);
   } else {
-    arma::eig_sym(result.eigenvalues, cov_mat);
+    arma::eig_sym(eigval, cov_mat);
   }
 
-  const arma::uvec indices = arma::sort_index(result.eigenvalues, 1);
+  const arma::uvec indices = arma::sort_index(eigval, 1);
 
   for (std::size_t i=0; i < n_vars; ++i) {
-    result.eigenvalues(i) = result.eigenvalues(indices(i));
+    result.eigenvalues(i) = eigval(indices(i));
   }
 
   if (compute_eigenvectors) {
     for (std::size_t i=0; i < n_vars; ++i) {
-      result.eigenvectors.col(i) = result.eigenvectors.col(indices(i));
+      result.eigenvectors.col(i) = eigvec.col(indices(i));
     }
     armapca::enforce_positive_sign_by_column(&result.eigenvectors);
   }
