@@ -8,24 +8,11 @@ namespace armapca {
 
 
 template<typename T>
-arma::Mat<T> covariance_matrix(const arma::Mat<T>& matrix) {
-  return (arma::trans(matrix) * matrix) * (1. / (matrix.n_rows - 1));
-}
+arma::Mat<T> covariance_matrix(const arma::Mat<T>& matrix);
 
 
-template<typename T, typename RandGen>
-arma::Mat<T> shuffled_matrix(const arma::Mat<T>& matrix, RandGen* gen) {
-  arma::Mat<T> shuffled(matrix.n_rows, matrix.n_cols);
-  std::vector<std::size_t> indices(matrix.n_rows);
-  std::iota(indices.begin(), indices.end(), 0);
-  for (std::size_t j=0; j < matrix.n_cols; ++j) {
-    std::shuffle(indices.begin(), indices.end(), *gen);
-    for (std::size_t i=0; i < matrix.n_rows; ++i) {
-      shuffled(i, j) = matrix(indices[i], j);
-    }
-  }
-  return shuffled;
-}
+template<typename T>
+arma::Mat<T> shuffled_matrix(const arma::Mat<T>& matrix, std::mt19937* gen);
 
 
 template<typename T>
